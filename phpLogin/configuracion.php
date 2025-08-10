@@ -2,5 +2,5 @@
 $server = "mysql-systemaccesscontrol.alwaysdata.net";
 $user = "425802";
 $pass = "2325247502";
-$bd = "mysql-systemaccesscontrol.alwaysdata.net";
+$bd = "systemaccesscontrol_logindb";
 ?>
