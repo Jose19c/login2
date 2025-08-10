@@ -33,10 +33,10 @@ if (isset($_POST["ingresar"])) {
             }
             exit;
         } else {
-            echo "<script>alert('Contraseña incorrecta'); window.location = 'index copy.php';</script>";
+            echo "<script>alert('Contraseña incorrecta'); window.location = 'login.php';</script>";
         }
     } else {
-        echo "<script>alert('Usuario no encontrado'); window.location = 'index copy.php';</script>";
+        echo "<script>alert('Usuario no encontrado'); window.location = 'login.php';</script>";
     }
 }
 
@@ -50,7 +50,7 @@ if (isset($_POST["registrar"])) {
     $tipo = mysqli_real_escape_string($conexion, $_POST['Tipo']);
 
     if ($password !== $passwordr) {
-        echo "<script>alert('Las contraseñas no coinciden'); window.location = 'index copy.php';</script>";
+        echo "<script>alert('Las contraseñas no coinciden'); window.location = 'login.php';</script>";
         exit;
     }
 
@@ -60,16 +60,16 @@ if (isset($_POST["registrar"])) {
     $resultadouser = $conexion->query($sqluser);
 
     if ($resultadouser && $resultadouser->num_rows > 0) {
-        echo "<script>alert('El usuario ya existe'); window.location = 'index copy.php';</script>";
+        echo "<script>alert('El usuario ya existe'); window.location = 'login.php';</script>";
     } else {
         $sqlusuario = "INSERT INTO usuarios (NombreC, Correo, usuario, password, tipo)
                        VALUES ('$nombre','$correo','$usuario','$password_encriptada','$tipo')";
         $resultadousuario = $conexion->query($sqlusuario);
 
         if ($resultadousuario) {
-            echo "<script>alert('Registro exitoso'); window.location = 'index copy.php';</script>";
+            echo "<script>alert('Registro exitoso'); window.location = 'login.php';</script>";
         } else {
-            echo "<script>alert('Error al registrarse: " . $conexion->error . "'); window.location = 'index copy.php';</script>";
+            echo "<script>alert('Error al registrarse: " . $conexion->error . "'); window.location = 'login.php';</script>";
         }
     }
 }
