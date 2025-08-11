@@ -4,11 +4,27 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
 body {
-    backdrop-filter: blur(4px);
+    position: relative;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     transition: color 0.5s ease;
+    overflow-x: hidden;
+}
+
+/* Capa difuminada con imagen de fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('ruta-de-tu-imagen.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(8px);
+    z-index: -1;
 }
 
 /* Contenedor Principal */
