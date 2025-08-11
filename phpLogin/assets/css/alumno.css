@@ -17,7 +17,7 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('/phpLogin/assets/img/alu_fondo.jpeg');
+    background-image: url('/www/phpLogin/assets/img/alu_fondo.jpeg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -318,4 +318,5 @@ tbody tr:hover {
         width: 100%;
         text-align: center;
     }
+
 }
