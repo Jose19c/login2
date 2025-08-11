@@ -3,7 +3,7 @@ include("conexion.php");
 session_start();
 
 if (!isset($_SESSION['id_usuario']) || $_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: index.php");
+    header("Location: login.php");
     exit;
 }
 
