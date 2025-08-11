@@ -317,3 +317,8 @@ body.force-light #listaContainer td {
     white-space: normal;
   }
 }
+/* Animación de pulsado para botones */
+.btn:active {
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+}
