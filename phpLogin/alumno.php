@@ -48,60 +48,26 @@ if ($resRetardos) {
     $cantidadRetardos = (int)$filaRetardos['retardos'];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistencias y Participaciones</title>
     <link rel="stylesheet" href="assets/css/alumno.css"/>
     <link rel="icon" href="assets/img/alumno.png" type="alumno.png">
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="bienvenida-alumno">
-    <div class="contenedor-horario">
-        <img src="assets/img/Horario.jpeg" alt="Horario" class="img-horario">
-    </div>
-    <h3>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h3>
-        <div id="timer-box">
-    <div id="timer-title">⏳ Tiempo restante:</div>
-    <div id="timer">00:00</div>
-    </div>
-</div>
-        <h4>Historial de Asistencias y Participaciones</h4>
-        <table class="table table-bordered table-striped mt-3">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Asistencia</th>
-                    <th>Participación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($fila = $resultadoAsistencias->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($fila['fecha']); ?></td>
-                        <td><?php echo htmlspecialchars($fila['asistencia']); ?></td>
-                        <td><?php echo htmlspecialchars($fila['participacion']); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
 
-        <a href="salir.php" class="btn btn-danger">Cerrar sesión</a>
-    </div>
-
-    <!-- ALERTAS DE RETARDOS/FALTAS -->
     <script>
     window.onload = function() {
         let faltas = <?php echo $cantidadFaltas; ?>;
         let retardos = <?php echo $cantidadRetardos; ?>;
 
+        // Alerta si tiene 2 retardos
         if (retardos === 2) {
             alert("⚠️ Un retardo más y se convierte en una falta.");
         }
 
+        // Convertir 3 retardos en 1 falta
         let totalFaltas = faltas + Math.floor(retardos / 3);
 
         if (totalFaltas === 2) {
@@ -109,14 +75,55 @@ if ($resRetardos) {
         } else if (totalFaltas >= 3) {
             alert("❌ Ya no puedes volver a faltar.");
         }
-    };
+    }
     </script>
+</head>
+<body class="img-bg" style="background: url('assets/img/alu_fondo.png') no-repeat center center fixed; background-size: cover;">
+    <!-- CRONÓMETRO FLOTANTE (se muestra solo durante las clases) -->
+    <div id="timer-box" style="display: none;">
+        <div id="timer-title">⏰ Tiempo restante</div>
+        <div id="timer">15:00</div>
+    </div>
 
-    <!-- NOTIFICACIONES + TEMPORIZADOR -->
+    <div class="container mt-5">
+        <div class="bienvenida-alumno">
+            <div class="contenedor-horario">
+                <img src="assets/img/Horario.jpeg" alt="Horario" class="img-horario" id="horario-img">
+            </div>
+            <h3>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h3>
+        </div>
+        
+        <h4>Historial de Asistencias y Participaciones</h4>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Asistencia</th>
+                        <th>Participación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($fila = $resultadoAsistencias->fetch_assoc()): ?>
+                        <tr>
+                            <td data-label="Fecha"><?php echo htmlspecialchars($fila['fecha']); ?></td>
+                            <td data-label="Asistencia"><?php echo htmlspecialchars($fila['asistencia']); ?></td>
+                            <td data-label="Participación"><?php echo htmlspecialchars($fila['participacion']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+        
+        <a href="salir.php" class="btn btn-danger">Cerrar sesión</a>
+    </div>
+
+    <!-- SCRIPTS -->
     <script>
     const horarios = {
-        1: "12:00", // Lunes
-        2: "07:00", // Martes
+        1: "20:30", // Lunes
+        2: "07:30", // Martes
         3: "10:00", // Miércoles
         4: "07:00", // Jueves
         5: "07:00"  // Viernes
@@ -135,7 +142,9 @@ if ($resRetardos) {
         const ahora = new Date();
 
         const inicioClase = new Date();
-        inicioClase.setHours(hora, minuto, 0, 0);
+        inicioClase.setHours(hora);
+        inicioClase.setMinutes(minuto);
+        inicioClase.setSeconds(0);
 
         const tiempoAsistencia = new Date(inicioClase.getTime() + 5 * 60000);
         const tiempoRetardo = new Date(inicioClase.getTime() + 10 * 60000);
@@ -148,7 +157,7 @@ if ($resRetardos) {
                 setTimeout(() => {
                     new Notification("⏰ Asistencia", {
                         body: "Tienes 5 minutos para llegar con asistencia ⏳",
-                        icon: "assets/img/reloj.png"
+                        icon: "/assets/img/reloj.png"
                     });
                 }, msAsistencia);
             }
@@ -157,7 +166,7 @@ if ($resRetardos) {
                 setTimeout(() => {
                     new Notification("⚠️ Retardo", {
                         body: "Tienes 5 minutos para llegar con retardo 🕒",
-                        icon: "assets/img/reloj.png"
+                        icon: "/assets/img/reloj.png"
                     });
                 }, msRetardo);
             }
@@ -198,27 +207,57 @@ if ($resRetardos) {
         if (!(dia in horarios)) return;
 
         const [horaClase, minutoClase] = horarios[dia].split(":").map(Number);
-        const inicioClase = new Date();
-        inicioClase.setHours(horaClase, minutoClase, 0, 0);
+        const horaInicio = new Date();
+        horaInicio.setHours(horaClase, minutoClase, 0);
 
         const ahora = new Date();
-        const tiempoTranscurrido = Math.floor((ahora - inicioClase) / 1000); // en segundos
+        const diferencia = (ahora - horaInicio) / 1000; // en segundos
 
-        const tiempoTotal = 900; // 15 minutos (5 asistencia + 10 retardo)
-
-        if (tiempoTranscurrido >= 0 && tiempoTranscurrido < tiempoTotal) {
-            const tiempoRestante = tiempoTotal - tiempoTranscurrido;
-            startCountdown(tiempoRestante, "timer");
+        if (diferencia >= 0 && diferencia <= 900) {
             document.getElementById("timer-box").style.display = "block";
-        } else {
-            document.getElementById("timer-box").style.display = "none";
+            startCountdown(900 - Math.floor(diferencia), "timer");
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // Función para manejar imagen de horario en móviles
+    function setupHorarioImage() {
+        const img = document.getElementById('horario-img');
+        
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.toggle('expanded');
+        });
+        
+        // Cerrar imagen al hacer click fuera (solo en móvil)
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768 && !img.contains(e.target)) {
+                img.classList.remove('expanded');
+            }
+        });
+    }
+
+    // Función para verificar si hay scroll horizontal en tablas
+    function checkTableScroll() {
+        const tableResponsive = document.querySelector('.table-responsive');
+        const table = tableResponsive.querySelector('table');
+        
+        if (window.innerWidth > 600 && table.scrollWidth > tableResponsive.clientWidth) {
+            tableResponsive.setAttribute('scrollable', 'true');
+        } else {
+            tableResponsive.removeAttribute('scrollable');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
         programarNotificaciones();
         iniciarTemporizadorSiEsClase();
+        setupHorarioImage();
+        checkTableScroll();
+        
+        // Re-check scroll en resize
+        window.addEventListener('resize', checkTableScroll);
     });
-</script>
+    </script>
 </body>
 </html>
