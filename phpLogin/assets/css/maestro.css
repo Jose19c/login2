@@ -38,6 +38,7 @@
   z-index: -1;
   opacity: 0.6;
 }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -107,6 +108,12 @@ h2 {
 .btn.verde { background-color: #00b894; }
 .btn.azul { background-color: #0984e3; }
 .btn.rojo { background-color: #d63031; }
+
+/* Animación de pulsado para botones */
+.btn:active {
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+}
 
 /* ====== EFECTOS PARA MODO OSCURO ====== */
 @media (prefers-color-scheme: dark) {
@@ -275,50 +282,148 @@ body.force-light #listaContainer td {
 }
 
 @media (max-width: 768px) {
-  .img-bg { padding: 20px; }
+  .img-bg { 
+    padding: 15px; 
+  }
+  
   .container {
     padding: 20px;
-    margin: 30px auto;
+    margin: 20px auto;
     border-radius: 12px;
+    max-width: 95%;
   }
-  h2 { font-size: 1.6rem; }
-  .table, #listaContainer table { font-size: 0.9rem; }
-  .btn { padding: 8px 14px; font-size: 0.9rem; }
-  /* Scroll horizontal en tablas */
-  .table, #listaContainer table {
-    display: block;
+  
+  h2 { 
+    font-size: 1.6rem; 
+    margin-bottom: 15px;
+  }
+  
+  /* Contenedor con scroll horizontal para tablas */
+  .table-responsive {
+    width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .table, #listaContainer table { 
+    min-width: 600px; /* Ancho mínimo para que no se comprima demasiado */
+    font-size: 0.9rem;
+  }
+  
+  .table th, .table td,
+  #listaContainer th, #listaContainer td {
+    padding: 10px;
+    min-width: 80px; /* Ancho mínimo para las celdas */
     white-space: nowrap;
+  }
+  
+  .btn { 
+    padding: 10px 16px; 
+    font-size: 0.9rem; 
+    margin: 5px;
   }
 }
 
 @media (max-width: 480px) {
+  .img-bg {
+    padding: 10px;
+  }
+  
   .container {
     padding: 15px;
-    margin: 20px auto;
+    margin: 10px auto;
+    max-width: 98%;
   }
+  
   h2 {
     font-size: 1.4rem;
     text-align: center;
+    margin-bottom: 15px;
   }
-  .btn {
-    width: 100%;
-    margin-bottom: 8px;
-    padding: 10px;
-    font-size: 1rem;
+  
+  /* Para móviles pequeños, permitir scroll horizontal pero mejorar legibilidad */
+  .table-responsive {
+    border-radius: 6px;
   }
+  
+  .table, #listaContainer table {
+    min-width: 500px; /* Reducir un poco el ancho mínimo */
+    font-size: 0.85rem;
+  }
+  
   .table th, .table td,
   #listaContainer th, #listaContainer td {
     padding: 8px;
-    font-size: 0.85rem;
+    min-width: 70px;
+    font-size: 0.8rem;
   }
+  
+  .btn {
+    width: 100%;
+    margin: 5px 0;
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+  
+  #toggleButton {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+  }
+  
+  /* Mejorar la visualización del contenido de las celdas */
   .table td, #listaContainer td {
-    word-break: break-word;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Tooltip para ver contenido completo en móvil */
+  .table td:hover, #listaContainer td:hover {
+    overflow: visible;
     white-space: normal;
+    position: relative;
+    z-index: 10;
   }
 }
-/* Animación de pulsado para botones */
-.btn:active {
-  transform: scale(0.9);
-  transition: transform 0.1s ease;
+
+/* ====== ESTILOS ADICIONALES PARA MEJORAR UX EN MÓVIL ====== */
+@media (max-width: 768px) {
+  /* Indicador visual de scroll horizontal */
+  .table-responsive::after {
+    content: "← Desliza para ver más →";
+    display: block;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #666;
+    padding: 5px;
+    background: rgba(108, 92, 231, 0.1);
+    border-radius: 0 0 8px 8px;
+  }
+  
+  /* Ocultar indicador cuando no hay overflow */
+  .table-responsive:not([scrollable])::after {
+    display: none;
+  }
+}
+
+/* ====== SCROLL BAR PERSONALIZADA ====== */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--color-primario);
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secundario);
 }
