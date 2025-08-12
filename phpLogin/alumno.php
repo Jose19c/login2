@@ -56,27 +56,6 @@ if ($resRetardos) {
     <title>Asistencias y Participaciones</title>
     <link rel="stylesheet" href="assets/css/alumno.css"/>
     <link rel="icon" href="assets/img/alumno.png" type="alumno.png">
-
-    <script>
-    window.onload = function() {
-        let faltas = <?php echo $cantidadFaltas; ?>;
-        let retardos = <?php echo $cantidadRetardos; ?>;
-
-        // Alerta si tiene 2 retardos
-        if (retardos === 2) {
-            alert("⚠️ Un retardo más y se convierte en una falta.");
-        }
-
-        // Convertir 3 retardos en 1 falta
-        let totalFaltas = faltas + Math.floor(retardos / 3);
-
-        if (totalFaltas === 2) {
-            alert("⚠️ Solo puedes faltar una vez más.");
-        } else if (totalFaltas >= 3) {
-            alert("❌ Ya no puedes volver a faltar.");
-        }
-    }
-    </script>
 </head>
 <body>
     <div class="container mt-5">
